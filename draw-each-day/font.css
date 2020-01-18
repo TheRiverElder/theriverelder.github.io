@@ -1,0 +1,24 @@
+@font-face {
+    font-family: '手书体';
+    src: url("./font/手书体.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: '装甲明朝体';
+    src: url("./font/装甲明朝体.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: '迷你繁篆书';
+    src: url("./font/迷你繁篆书.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: '方正姚体';
+    src: url("./font/方正姚体.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: '书体坊安景臣钢笔行书';
+    src: url("./font/书体坊安景臣钢笔行书.ttf") format('truetype');
+}

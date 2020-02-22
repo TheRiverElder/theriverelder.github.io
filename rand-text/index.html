@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Rand Text</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app" class="container">
+
+    <!--参数输入组件-->
+    <div class="page-header">
+        <div class="input-group">
+            <input id="iptKey" placeholder="输入要生成的键" type="text" class="form-control"/>
+            <span class="input-group-btn">
+                <button class="btn btn-info" type="button" onclick="generate()">生成</button>
+            </span>
+        </div>
+    </div>
+
+    <div class="main">
+        <!--模板输入组件-->
+        <div class="pattern-input-wrapper">
+            <textarea id="iptPattern" class="pattern-input panel panel-default" placeholder="在此输入模板" oninput="patternChanged = true"></textarea>
+            <div class="btn-group tool-bar" role="group">
+                <button type="button" class="btn btn-default" onclick="copyPattern()">复制模板</button>
+                <button type="button" class="btn btn-default" onclick="clearPattern()">清空</button>
+                <button type="button" class="btn btn-default" onclick="pastePattern()">粘贴替换</button>
+            </div>
+        </div>
+
+        <!--结果输出组件-->
+        <div id="ovlResult" class="result-overlay" onclick="setResult(false)">
+            <div class="result-wrapper">
+                <span id="spanOutput" class="result">[结果将会展现在这里]</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+<script src="random.js"></script>
+<script src="pattern-manager.js"></script>
+<script src="script.js"></script>
+</html>

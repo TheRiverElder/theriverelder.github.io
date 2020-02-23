@@ -34,9 +34,16 @@
         </div>
 
         <!--结果输出组件-->
-        <div id="ovlResult" class="result-overlay" onclick="setResult(false)">
+        <div id="ovlResult" class="result-overlay" onclick="setResultVisibility(false)">
             <div class="result-wrapper">
-                <span id="spanOutput" class="result">[结果将会展现在这里]</span>
+                <div id="pnlOutput" class="result">
+                    <p id="txtOutput">[结果将会展现在这里]</p>
+                    <div class="btn-group tool-bar" role="group">
+                        <button type="button" class="btn" onclick="copyResult()">复制</button>
+                        <button type="button" class="btn" onclick="generate()">再来</button>
+                        <button type="button" class="btn" onclick="setResultVisibility(false)">返回</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

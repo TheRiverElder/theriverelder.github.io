@@ -8,12 +8,6 @@
  */
 class PatternManager {
 
-    static TOKEN_TYPES = {
-        RAW: 'row',
-        KEY: 'key',
-        NAME: 'name',
-    };
-
     constructor() {
         this.namespace = {};
     }
@@ -123,8 +117,14 @@ class PatternManager {
             }
         }).join('');
     }
-
 }
+
+PatternManager.TOKEN_TYPES = {
+    RAW: 'row',
+    KEY: 'key',
+    NAME: 'name',
+};
+
 
 // region 正则表达式
 // 分割行的正则

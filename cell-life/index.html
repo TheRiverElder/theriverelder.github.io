@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cell Life</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="app">
+    <div class="center-wrapper">
+        <div class="main">
+            <canvas id="cvs"></canvas>
+            <div class="btn-group">
+                <button onclick="init()">Init</button>
+                <button onclick="start()">Start</button>
+                <button onclick="stop()">Stop</button>
+                <button onclick="clearMap()">Clear</button>
+                <button onclick="stepMap()">Step</button>
+                <button onclick="toggleGrid()">Gird</button>
+            </div>
+        </div>
+        <div class="inspector">
+            <div>
+                X: <span id="cellX"></span>
+                Y: <span id="cellY"></span>
+            </div>
+            <div>Power: <span id="cellPower"></span></div>
+            <div>Color: <span id="cellColorDisplay"/><span id="cellColor"></span></div>
+            <div id="cellDna"></div>
+        </div>
+    </div>
+</div>
+
+<script src="util.js"></script>
+<script src="life.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>

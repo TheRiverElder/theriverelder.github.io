@@ -68,10 +68,10 @@
     "sebastian": {"name": "奇怪的男子", "pic": "pic_sebastian"}
   },
   "resources": {
-    "pic_sebastian": "/test/assets/pic_sebastian.png",
-    "bg1": "/test/assets/bg1.jpg",
-    "bg2": "/test/assets/bg2.jpg",
-    "bg3": "/test/assets/bg3.jpg",
-    "bg_black": "/test/assets/bg_black.png"
+    "pic_sebastian": "test/assets/pic_sebastian.png",
+    "bg1": "test/assets/bg1.jpg",
+    "bg2": "test/assets/bg2.jpg",
+    "bg3": "test/assets/bg3.jpg",
+    "bg_black": "test/assets/bg_black.png"
   }
 }

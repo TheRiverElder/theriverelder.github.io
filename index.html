@@ -4,6 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <title>江奶奶的小站</title>
+    <link rel="icon" href="assets/river_icon_dark.ico" type="image/x-icon" />
 </head>
 
 <style>
@@ -28,18 +29,25 @@
         width: 100%;
         padding: .5em;
         box-sizing: border-box;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
         box-shadow: 0 0 .5em rgba(0, 0, 0, 0.5);
         background-color: #1ABC9C;
+        text-align: center;
     }
     
     .title {
-        flex: 1;
-        font-size: 2em;
+        display: inline-block;
+        font-size: 2.5em;
         text-align: center;
         color: #FFFFFF;
+        letter-spacing: .5em;
+    }
+    
+    .subtitle {
+        display: inline-block;
+        font-size: 1em;
+        text-align: center;
+        color: #FFFFFF;
+        letter-spacing: .5em;
     }
     
     .content {
@@ -47,19 +55,38 @@
         width: 100%;
         max-width: 80rem;
         margin: auto;
+        overflow-y: auto;
         box-shadow: 0 .5em .5em rgba(0, 0, 0, 0.5);
         background-color: #34495E;
+        text-align: center;
+    }
+    
+    .main-image {
+        margin-top: 2em;
+        height: 10em;
+        box-sizing: border-box;
+        border: .3em solid #FFFFFF;
+        border-radius: 5em;
+    }
+    
+    .main-text {
+        padding: 1em;
+        font-size: 1.2em;
+        color: #FFFFFF;
+        word-break: break-all;
+    }
+    
+    .app-link-list {
+        width: 100%;
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: space-evenly;
         align-items: flex-start;
         align-content: flex-start;
-        overflow-y: auto;
     }
     
     .app-link {
-        flex-basis: 1;
         flex-shrink: 0;
         width: 100%;
         max-width: 15em;
@@ -85,7 +112,8 @@
     .name,
     .subname {
         width: 100%;
-        word-break: break-all;
+        text-align: left;
+        word-break: normal;
         color: #FFFFFF;
     }
     
@@ -113,14 +141,19 @@
 
 <body>
     <div class="top-bar">
-        <span class="title">小站</span>
+        <span class="title">江奶奶小站</span>
+        <br/>
+        <span class="subtitle">River Elder's</span>
     </div>
-    <div id="content" class="content">
+    <div class="content">
+        <img class="main-image" src="assets/river_icon_dark.png" alt="River Elder's Icon" />
+        <p class="main-text">欢迎来到江奶奶的个人小站，希望泥能VAN地开心♥，FA现快乐哦~</p>
+        <div id="app-link-list" class="app-link-list"></div>
     </div>
 </body>
 
 <script type="text/javascript">
-    const content = document.getElementById('content');
+    const content = document.getElementById('app-link-list');
 
     function addAppLink({
         name,

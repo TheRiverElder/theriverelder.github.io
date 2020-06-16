@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>江奶奶的小站</title>
+</head>
+
+<style>
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-size: 1rem;
+    }
+    
+    body {
+        box-shadow: 0 0 .5em #808080;
+        display: flex;
+        flex-direction: column;
+        background-color: #2C3E50;
+    }
+    
+    .top-bar {
+        width: 100%;
+        padding: .5em;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        box-shadow: 0 0 .5em rgba(0, 0, 0, 0.5);
+        background-color: #1ABC9C;
+    }
+    
+    .title {
+        flex: 1;
+        font-size: 2em;
+        text-align: center;
+        color: #FFFFFF;
+    }
+    
+    .content {
+        flex: 1;
+        width: 100%;
+        max-width: 80rem;
+        margin: auto;
+        box-shadow: 0 .5em .5em rgba(0, 0, 0, 0.5);
+        background-color: #34495E;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        align-items: flex-start;
+        align-content: flex-start;
+        overflow-y: auto;
+    }
+    
+    .app-link {
+        flex-basis: 1;
+        flex-shrink: 0;
+        width: 100%;
+        max-width: 15em;
+        height: 8em;
+        margin: 1em;
+        padding: 1em;
+        border-radius: .5em;
+        box-sizing: border-box;
+        background-color: #6699CC;
+        transition: all 500ms;
+    }
+    
+    .app-link:hover {
+        transform: scale(1.05);
+        transition: all 500ms;
+        box-shadow: 0 .2em .5em rgba(0, 0, 0, 0.5);
+    }
+    
+    .app-link>span {
+        display: inline-block;
+    }
+    
+    .name,
+    .subname {
+        width: 100%;
+        word-break: break-all;
+        color: #FFFFFF;
+    }
+    
+    .name {
+        font-size: 1.5em;
+    }
+    
+    .subname {
+        font-size: 1em;
+        margin-top: .5em;
+    }
+    
+    .published {
+        background-color: #3498DB;
+    }
+    
+    .alpha {
+        background-color: #2ECC71;
+    }
+    
+    .building {
+        background-color: #E67E22;
+    }
+</style>
+
+<body>
+    <div class="top-bar">
+        <span class="title">小站</span>
+    </div>
+    <div id="content" class="content">
+    </div>
+</body>
+
+<script type="text/javascript">
+    const content = document.getElementById('content');
+
+    function addAppLink({
+        name,
+        subname,
+        link,
+        state
+    }) {
+        const element = document.createElement('div');
+        const elemName = document.createElement('span');
+        const elemSubname = document.createElement('span');
+
+        element.className = 'app-link ' + state;
+        elemName.className = 'name';
+        elemSubname.className = 'subname';
+
+        elemName.innerText = name;
+        elemSubname.innerText = subname;
+
+        element.appendChild(elemName);
+        element.appendChild(elemSubname);
+
+        element.addEventListener('click', () => window.location.href = link);
+
+        content.appendChild(element);
+    }
+
+    [{
+        name: '骰娘',
+        subname: '不是娜叶酱！',
+        link: '/dice/',
+        state: 'published'
+    }, {
+        name: '细胞游戏',
+        subname: '不是康威的生命游戏哦~',
+        link: '/cell-life/',
+        state: 'published'
+    }, {
+        name: '每日抽卡',
+        subname: '故事纯属虚构',
+        link: '/draw-each-day/',
+        state: 'published'
+    }, {
+        name: 'Galgame播放器 (alpha)',
+        subname: '播放自己的galgame',
+        link: '/egg-displayer/',
+        state: 'alpha'
+    }, {
+        name: 'Galgame编辑器 (buinding)',
+        subname: '编写自己的galgame',
+        link: '/egg-editor/',
+        state: 'building'
+    }, {
+        name: 'Farorb (alpha)',
+        subname: 'Not FARCRY!',
+        link: '/farorb/',
+        state: 'alpha'
+    }, {
+        name: 'Mind Node 节点关系图',
+        subname: '理清剧情关系的小工具',
+        link: '/mind-node/',
+        state: 'published'
+    }, {
+        name: 'Nova Farm (alpha)',
+        subname: '经营一个外星农场(?)',
+        link: '/n-farm/',
+        state: 'alpha'
+    }, {
+        name: '随机文本生成器',
+        subname: '用模板生成文本（禁止套娃）',
+        link: '/rand-text/',
+        state: 'published'
+    }].forEach(e => addAppLink(e));
+</script>
+
+</html>

@@ -1,0 +1,208 @@
+<html>
+
+<head>
+    <title>网格点判定</title>
+
+    <style>
+        html {
+            font-size: 3em;
+        }
+
+        .line {
+            width: 100%;
+            display: flex;
+        }
+
+        .input-block {
+            flex: 1;
+        }
+
+        .input-block>input,
+        .input-block>button {
+            font-size: inherit;
+            width: 100%
+        }
+
+        .block {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="line">
+        <div class="input-block">
+            <label>模式：<span lb-bind="unit"></span>n + 1</label>
+            <input type="number" lb-bind="unit" min="1" />
+        </div>
+    </div>
+
+    <div class="line">
+        <div class="input-block">
+            <label>参考点X</label>
+            <input type="number" lb-bind="anchorX" />
+        </div>
+
+        <div class="input-block">
+            <label>参考点Z</label>
+            <input type="number" lb-bind="anchorZ" />
+        </div>
+    </div>
+
+    <div class="line">
+        <div class="input-block">
+            <label>判定点X</label>
+            <input type="number" lb-bind="iptX" />
+        </div>
+
+        <div class="input-block">
+            <label>判定点Z</label>
+            <input type="number" lb-bind="iptZ" />
+        </div>
+    </div>
+
+    <div class="line">
+        <div class="input-block">
+            <input type="text" lb-bind="cord" />
+        </div>
+    </div>
+
+    <div class="line">
+        是否网格点：<span lb-bind="isGridPoint"></span>
+    </div>
+
+    <div class="line">
+        是否照明点：<span lb-bind="isLightPoint"></span>
+    </div>
+
+    <div class="line">
+        附近网格点：<span lb-bind="nearbyGridPoint"></span>
+    </div>
+
+    <div class="line">
+        附近照明点：<span lb-bind="nearbyLightPoint"></span>
+    </div>
+
+
+</body>
+
+<script>
+
+
+    const lightBind = (function () {
+
+        const INPUT_TAGS = new Set(['INPUT', 'TEXTAREA']);
+
+        /**
+         * 轻量级数据绑定。
+         * @param {String} attr 需要被绑定的元素的属性名
+         * @param {Object} data 需要被绑定的数据
+         * @returns {Proxy} 绑定完成的数据
+         */
+        function lightBind({ data, watch = null }, attr = "lb-bind") {
+            const setters = {};
+            const keys = Object.keys(data);
+            const keySet = new Set(keys);
+            keys.forEach(key => setters[key] = []);
+
+            function set(key, value, source = null) {
+                const old = data[key];
+                data[key] = value;
+                setters[key].forEach(setter => setter(value, old, proxy, source));
+            }
+
+            // 创建代理
+            const proxy = new Proxy(data, {
+                set(target, property, value) {
+                    if (keySet.has(property)) {
+                        set(property, value, null);
+                    }
+                },
+            });
+
+            const elements = [...document.querySelectorAll("*[" + attr + "]")];
+            elements.forEach(elem => {
+                const key = elem.getAttribute(attr);
+                if (keySet.has(key)) {
+                    if (INPUT_TAGS.has(elem.tagName)) {
+                        if (elem.type === 'number') {
+                            elem.addEventListener('input', () => set(key, Number(elem.value), elem));
+                        } else {
+                            elem.addEventListener('input', () => set(key, elem.value, elem));
+                        }
+                        setters[key].push((value, old, proxy, source) => {
+                            if (source !== elem) {
+                                elem.value = value;
+                            }
+                        });
+                        elem.value = data[key];
+                    } else {
+                        setters[key].push((value) => elem.innerText = value);
+                        elem.innerText = data[key];
+                    }
+                }
+            });
+            if (watch) {
+                Object.entries(watch).forEach(([key, watcher]) => {
+                    if (keySet.has(key)) {
+                        setters[key].push(watcher);
+                    }
+                });
+            }
+            return proxy;
+        }
+
+        return lightBind;
+    })();
+
+    const data = lightBind({
+        data: {
+            unit: 4,
+            anchorX: 0,
+            anchorZ: 0,
+            iptX: 0,
+            iptZ: 0,
+            cord: '',
+            isGridPoint: true,
+            isLightPoint: true,
+            nearbyGridPoint: '',
+            nearbyLightPoint: '',
+        },
+
+        watch: {
+            iptX: calculate,
+            iptZ: calculate,
+
+            cord(text, _, p) {
+                const cs = text.split(/[ \t\n\r,]+/).filter(e => e.length > 0 && /[-+]?\d+(\.\d)?/.test(e)).map(e => e ? Number(e) : 0);
+                if (cs.length >= 1) p.iptX = cs[0];
+                if (cs.length >= 2) p.iptZ = cs[1];
+            },
+        }
+    });
+
+    function calculate() {
+        const ix = Math.floor(data.iptX);
+        const iz = Math.floor(data.iptZ);
+
+        const ax = Math.floor(data.anchorX);
+        const az = Math.floor(data.anchorZ);
+
+        const dx = ix - ax;
+        const dz = iz - az;
+
+        const absDx = Math.abs(dx);
+        const absDz = Math.abs(dz);
+
+        const unit = data.unit;
+        const halfUnit = Math.round(data.unit / 2);
+
+        data.isGridPoint = (absDx % unit === 0) && (absDz % unit === 0);
+        data.isLightPoint = (absDx % unit === halfUnit) && (absDz % unit === halfUnit);
+        data.nearbyGridPoint = (Math.round(dx / unit) * unit + ax) + ", " + (Math.round(dz / unit) * unit + az);
+        data.nearbyLightPoint = (Math.round((dx - halfUnit) / unit) * unit + ax + halfUnit) + ", " + (Math.round((dz - halfUnit) / unit) * unit + az + halfUnit);
+    }
+</script>
+
+</html>

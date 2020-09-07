@@ -1,1 +1,93 @@
-<!DOCTYPE html><html lang=en><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><link rel=icon href=/mind-node/favicon.ico><title>mind-node</title><link href=/mind-node/css/app.b7fc2cb5.css rel=preload as=style><link href=/mind-node/js/app.8bb2817a.js rel=preload as=script><link href=/mind-node/js/chunk-vendors.3d6a4551.js rel=preload as=script><link href=/mind-node/css/app.b7fc2cb5.css rel=stylesheet></head><body><noscript><strong>We're sorry but mind-node doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id=app></div><script src=/mind-node/js/chunk-vendors.3d6a4551.js></script><script src=/mind-node/js/app.8bb2817a.js></script></body></html>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>RMN</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+
+        <!-- 编辑器面板 -->
+        <div id="editor" class="full gray-bg d-flex flex-vertical">
+            <!-- 菜单 -->
+            <div id="button-bar" class="white-bg shadow pa-p5">
+                <!-- 打开SL面板 -->
+                <button onclick="openSLPanel()">SL</button>
+
+                <!-- 清空节点池 -->
+                <button onclick="clearNodes()">Clear</button>
+
+                <!-- 新增节点 -->
+                <button onclick="createAndAppendNode()">New Node</button>
+
+                <!-- 转换方向 -->
+                <button onclick="toggleVertical()">Change Direction</button>
+            </div>
+
+            <!-- 节点池 -->
+            <div id="pool" class="relative overflow-hidden flex-grow-1">
+                <!-- 节点之间的关系线条 -->
+                <canvas id="links" class="full"></canvas>
+
+                <!-- 节点实际内容集合 -->
+                <div id="node-container" class="full overlay" 
+                    onmousedown="startMovePanel(event)" 
+                    onmousemove="onMouseMove(event)"
+                    onmouseup="onMouseUp(event)"
+                    onmouseleave="onMouseLeave(event)"
+                >
+                    <!-- 节点元素模板 -->
+                    <template id="node-el-template">
+                        <div class="node white-bg round shadow">
+                            <!-- 拖动条，仅仅作为装饰 -->
+                            <div class="drag-bar">
+                                <div class="drag-bar-icon round"></div>
+                            </div>
+    
+                            <!-- 正文 -->
+                            <div class="content pa-p5">
+                                <span>TEXT</span>
+                                <textarea class="hidden">TEXT</textarea>
+                            </div>
+    
+                            <!-- 操作按键 -->
+                            <div class="node-action-bar fill-width d-flex align-items-center">
+                                <button class="flex-grow-1">Edit</button>
+                                
+                                <div class="node-handle""></div>
+    
+                                <button class="flex-grow-1">Delete</button>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+
+        <!-- SL面板 -->
+        <div id="sl-panel" class="overlay hidden">
+            <div class="white-bg round full pa-1 d-flex flex-vertical">
+                <!-- SL菜单 -->
+                <div id="sl-button-bar" class="pa-p5">
+                    <!-- 保存 -->
+                    <button onclick="trySavePool()">Save</button>
+
+                    <!-- 载入 -->
+                    <button onclick="tryLoadPool()">Load</button>
+
+                    <!-- 复制 -->
+                    <button onclick="copyPool()">Copy</button>
+
+                    <!-- 退出 -->
+                    <button onclick="closeSLPanel()">Exit</button>
+                </div>
+
+                <!-- 数据输入输出 -->
+                <textarea id="pool-text" class="fill-width no-resize overflow-x-auto flex-grow-1"></textarea>
+            </div>
+        </div>
+    </body>
+
+    <script src="script.js"></script>
+</html>

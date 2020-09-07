@@ -1,0 +1,214 @@
+html, body, .full {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.hidden {
+    display: none;
+}
+
+.overflow-hidden {
+    overflow: hidden;
+}
+
+.fill-width {
+    width: 100%;
+}
+
+.fill-height {
+    height: 100%;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+button {
+    padding: .5em 1em;
+    outline: none;
+    background-color: #eee;
+    color: #555;
+    font-size: 1em;
+    border: none;
+    border-radius: .2em;
+    transition: background-color 200ms, color 200ms;
+}
+
+button:hover {
+    background-color: #ddd;
+    color: #444;
+    cursor: pointer;
+}
+
+button:active {
+    background-color: #888;
+    color: #222;
+}
+
+.relative {
+    position: relative;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+
+.shadow {
+    box-shadow: 2px 2px 2px #ccc;
+}
+
+.pa-1 {
+    padding: 1em;
+}
+
+.pa-p5 {
+    padding: .5em;
+}
+
+.pa-p2 {
+    padding: .2em;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.flex-vertical {
+    flex-direction: column;
+}
+
+.flex-grow-1 {
+    flex-grow: 1;
+    flex-basis: 0;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.round {
+    border-radius: .2em;
+}
+
+.gray-bg {
+    background-color: #eee;
+}
+
+.white-bg {
+    background-color: #fff;
+}
+
+.node {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    overflow: hidden;
+    min-width: 10em;
+    max-width: 20em;
+}
+
+.node > .drag-bar {
+    width: 100%;
+    height: 10px;
+    background-color: rgb(57, 59, 92);
+    text-align: center;
+    cursor: grab;
+    padding-top: 4px;
+}
+
+.node > .drag-bar > .drag-bar-icon {
+    width: 20px;
+    height: 2px;
+    margin: auto;
+    background-color: #fff;
+}
+
+.node > .content > span {
+    word-wrap: break-word;
+}
+
+.node > .content > textarea {
+    width: 100%;
+    padding: .5em;
+}
+
+.node > .node-action-bar > button {
+    background-color: #fff;
+    color: #ccc;
+    border: none;
+    border-radius: 0;
+    padding: .2em .5em;
+    transition: background-color 200ms, color 200ms;
+}
+
+.node > .node-action-bar > button:hover {
+    background-color: #eee;
+    color: #888;
+}
+
+.node >  .node-action-bar > .node-handle {
+    height: 1em;
+    width: 1em;
+    margin: 0 1em;
+    background-color: #ccc;
+    border-radius: .5em;
+    transition: border-top-right-radius 500ms, border-bottom-left-radius 500ms, background-color 500ms;
+}
+
+.node >  .node-action-bar > .node-handle:hover {
+    background-color: rgb(59, 138, 230);
+}
+
+.node >  .node-action-bar > .node-handle.linking {
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
+    background-color: rgb(57, 59, 92);
+    animation-name: expand;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes expand {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+#node-container.moving {
+    cursor: move;
+}
+
+#node-container.dragging,
+#node-container.dragging * {
+    cursor: grabbing;
+}
+
+#sl-panel {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #000000a0;
+    padding: 2em;
+}
+
+.no-resize {
+    resize: none;
+}
+
+.overflow-x-auto {
+    overflow-x: auto;
+}

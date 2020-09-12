@@ -14,7 +14,7 @@ const POOL = document.getElementById('pool');
 const NODE_CONTAINER = document.getElementById('node-container');
 const LINK_CANVAS = document.getElementById('links');
 const NODE_EL_TEMPLATE = document.getElementById('node-el-template');
-const SL_PANEL = document.getElementById('sl-DATA.panel');
+const SL_PANEL = document.getElementById('sl-panel');
 const POOL_TEXT = document.getElementById('pool-text');
 
 function resizeCanvas() {

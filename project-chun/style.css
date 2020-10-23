@@ -1,0 +1,67 @@
+html, body, #app {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    font-size: 2vh;
+}
+
+#app {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+#text-panel {
+    flex: 1;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    background-color: #e7e7e7;
+    padding: 1em;
+}
+
+.text {
+    margin-bottom: .5em;
+    padding-top: .5em;
+}
+
+#option-panel {
+    height: 30vh;
+    flex-shrink: 0;
+    padding: 1em;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    background-color: #ffffff;
+}
+
+.option {
+    width: 100%;
+    text-align: center;
+    border: 0 solid #003388;
+    border-radius: .2em;
+    padding: .5em 2em;
+    margin: .5em 0;
+    cursor: pointer;
+}
+
+.move {
+    color: #1e1e24;
+    border-top: 1px dashed #646464;
+}
+
+.bad {
+    color: #972020;
+}
+
+.good {
+    color: #27833e;
+}
+
+.event {
+    color: #4d441f;
+}

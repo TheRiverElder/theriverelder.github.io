@@ -1,4 +1,5 @@
 const APP = document.getElementById('app');
+const STATE_BAR = document.getElementById('state-bar');
 const TEXT_PANEL = document.getElementById('text-panel');
 const OPTION_PANEL = document.getElementById('option-panel');
 
@@ -14,12 +15,15 @@ const GAME = {
      */
     showState(state = true, portOptions = true) {
         if (state) {
-            this.addText("第$days天，当前血量：$hp，钱：$money，荣誉：$honor，地点：$site，地点可通向：$ports");
+            STATE_BAR.innerText = this.fillText("第$days天，当前血量：$hp，钱：$money，荣誉：$honor，\n地点：$site，地点可通向：$ports");
         }
         if (portOptions) {
             const site = this.currentSite;
             if (site) {
-                this.setOptions(site.ports.map(p => ({ text: "走向" + this.getSiteByDefault(p.target).name, target: p.target})));
+                this.setOptions(site.ports.map(p => ({ 
+                    text: p.name || "走向" + this.getSiteByDefault(p.target).name, 
+                    action: p.action || (game => game.goToSite(p.target)),
+                })));
             }
         }
     },
@@ -29,19 +33,19 @@ const GAME = {
      * @param {String | Message} textOrMessage 要添加的文本
      * @param {String} type 类型
      */
-    addText(textOrMessage, type = 'normal') {
+    addText(textOrMessage, ...types) {
         let text;
         if (typeof textOrMessage === 'string') {
             text = textOrMessage;
         } else {
             text = text.text;
-            type = text.type || type;
+            types.push(text.type || 'normal');
         }
         const elem = document.importNode(TEXT_TMPL.content, true);
         const p = elem.querySelector(".text");
         
         p.innerHTML = this.fillText(text);
-        p.classList.add(type);
+        types.forEach(t => p.classList.add(t));
 
         TEXT_PANEL.appendChild(elem);
         TEXT_PANEL.scrollTo({ top: TEXT_PANEL.scrollHeight, behavior: 'smooth' });
@@ -75,19 +79,19 @@ const GAME = {
 
     /**
      * 走向某个地点
-     * @param {String} siteID 地点的ID
+     * @param {String} siteId 地点的ID
+     * @param {Boolean} instantly 是否立即传送
      */
-    goToSite(siteID) {
-        this.state.site = siteID;
-        this.state.days++;
-        this.addText("你来到了$site，这里可以通向：$ports", 'move');
-        this.mutateMoney(-5);
+    goToSite(siteId, instantly) {
+        this.state.site = siteId;
+        this.addText("你来到了$site", 'move');
+        if (!instantly) {
+            this.state.days++;
+            this.mutate('money', -randInt(10, 20), '食宿消耗');
+        }
+        this.showState();
         const site = this.currentSite;
         if (site) {
-            this.setOptions(site.ports.map(p => ({ 
-                text: "走向" + this.getSiteByDefault(p.target).name, 
-                target: p.target
-            })));
             const event = choose(site.events);
             if (event) {
                 this.triggerEvent(event.id);
@@ -98,12 +102,17 @@ const GAME = {
 
     /**
      * 触发游戏事件
-     * @param {String} eventId 事件ID
+     * @param {String} event 事件ID或者事件本身
      */
-    triggerEvent(eventId) {
-        const event = this.mapping.events[eventId];
+    triggerEvent(event) {
+        if (typeof event === 'string') {
+            event = this.mapping.events[event];
+        }
         if (event && event.action) {
             event.action(this);
+        } else {
+            this.addText(event.text, 'event');
+            this.setOptions(event.options || []);
         }
     },
 
@@ -125,43 +134,32 @@ const GAME = {
     },
 
     /**
-     * 改变HP
+     * 改变数值
+     * @param {String} key 变化的状态键
      * @param {Number} delta 变化量
+     * @param {String} reason 变化原因
      */
-    mutateHp(delta) {
-        this.state.hp = constraint(this.state.hp + delta, 0, 100);
+    mutate(key, delta, reason) {
+        let finalValue = (this.state[key] || 0) + delta;
+        switch (key) {
+            case 'hp': finalValue = constraint(this.state[key] + delta, 0, 100); break;
+            case 'money': finalValue = constraint(this.state[key] + delta, 0, Infinity); break;
+            case 'honor': finalValue = constraint(this.state[key] + delta, -100, 100); break;
+        }
+        const keyStr = {
+            hp: '血量',
+            money: '金钱',
+            honor: '荣誉',
+        }[key] || '???';
+        this.state[key] = finalValue;
         if (delta) {
-            this.addText("血量" + (delta > 0 ? '+' + delta : delta), delta > 0 ? 'good' : 'bad');
+            this.addText((reason ? reason + ", " : "") + keyStr + (delta > 0 ? '+' + delta : delta), 'value-mutation', delta > 0 ? 'good' : 'bad');
         }
-        this.save();
-        if (this.state.hp <= 0) {
-            this.gameOver("失血过多");
-        }
-    },
-
-    /**
-     * 改变钱
-     * @param {Number} delta 变化量
-     */
-    mutateMoney(delta) {
-        this.state.money = constraint(this.state.money + delta, 0);
-        if (delta) {
-            this.addText("钱" + (delta > 0 ? '+' + delta : delta), delta > 0 ? 'good' : 'bad');
-        }
-        this.save();
-        if (this.state.money <= 0) {
-            this.gameOver("饥饿");
-        }
-    },
-
-    /**
-     * 改变荣誉
-     * @param {Number} delta 变化量
-     */
-    mutateHonor(delta) {
-        this.state.money = constraint(this.state.money + delta, -100, 100);
-        if (delta) {
-            this.addText("荣誉" + (delta > 0 ? '+' + delta : delta), delta > 0 ? 'good' : 'bad');
+        this.showState(true, false);
+        switch (key) {
+            case 'hp': if (finalValue <= 0) this.gameOver('失血过多'); break;
+            case 'money': if (finalValue <= 0) this.gameOver('贫穷'); break;
+            case 'honor': if (finalValue <= -100) this.gameOver('臭名昭著'); break;
         }
         this.save();
     },
@@ -251,9 +249,10 @@ const GAME = {
             money: 100,
             honor: 0,
         });
+        this.addText('--------');
         this.addText(entry.story);
         this.showState(true, false);
-        this.goToSite(entry.site);
+        this.goToSite(entry.site, true);
     },
 
     /**

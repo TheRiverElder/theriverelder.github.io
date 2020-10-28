@@ -1,3 +1,4 @@
+
 const DATA = {
     sites: [
         {
@@ -45,95 +46,83 @@ const DATA = {
     events: [
         {
             id: "nothing",
-            action: () => {},
+            action: () => { },
         },
         {
             id: "pick_purse",
-            action: (game) => {
-                game.addText("你发现地上有一个钱包", 'event');
-                game.setOptions([
-                    { 
-                        text: "捡起收好", 
-                        action: game => {
-                            if (chance(0.5)) {
-                                game.addText("被钱包主人发现", 'bad');
-                                game.mutateHonor(-randInt(10, 20));
-                                if (chance(0.6)) {
-                                    game.addText("而且还被打了一顿", 'bad');
-                                    game.mutateHp(-randInt(10, 20));
-                                }
-                            } else {
-                                game.addText("收为己有", 'good');
-                                game.mutateMoney(randInt(10, 100));
+            text: "你发现地上有一个钱包",
+            options: [
+                {
+                    text: "捡起收好",
+                    action: game => {
+                        if (chance(0.5)) {
+                            game.mutate('honor', -randInt(10, 20), "被钱包主人发现");
+                            if (chance(0.6)) {
+                                game.mutate('hp', -randInt(10, 20), '而且还被打了一顿');
                             }
-                            game.showState();
+                        } else {
+                            game.mutate('money', randInt(10, 100), '收为己有');
                         }
-                    },
-                    { 
-                        text: "送到派出所", 
-                        action: game => {
-                            game.addText("得到了👮蜀黍的赞赏", 'good');
-                            game.mutateHonor(randInt(10, 20));
-                            game.showState();
-                        }
-                    },
-                    { 
-                        text: "无视", 
-                        action: game => {
-                            game.addText("于是你继续你的逃亡生涯", 'bad');
-                            game.showState();
-                        }
-                    },
-                ]);
-            },
+                        game.showState();
+                    }
+                },
+                {
+                    text: "送到派出所",
+                    action: game => {
+                        game.mutate('honor', randInt(10, 20), '"得到了👮蜀黍的赞赏"');
+                        game.showState();
+                    }
+                },
+                {
+                    text: "无视",
+                    action: game => {
+                        game.addText("于是你继续你的逃亡生涯", 'bad');
+                        game.showState();
+                    }
+                },
+            ],
         },
         {
             id: "rob",
-            action: (game) => {
-                game.addText("你遭遇了抢劫", 'event');
-                game.setOptions([
-                    { 
-                        text: "反抗", 
-                        action: game => {
-                            if (chance(0.5)) {
-                                game.addText("你打了了劫匪，一分钱没丢，但是受伤了", 'bad');
-                                game.mutateHp(-randInt(5, 10));
-                            } else {
-                                game.addText("你不仅没保护住钱，而且受伤了", 'bad');
-                                game.mutateHp(-randInt(10, 30));
-                                game.mutateMoney(-randInt(15, 20));
-                            }
-                            game.showState();
+            text: "你遭遇了抢劫",
+            options: [
+                {
+                    text: "反抗",
+                    action: game => {
+                        if (chance(0.5)) {
+                            game.mutate('hp', -randInt(5, 10), '你打了了劫匪，一分钱没丢，但是受伤了');
+                        } else {
+                            game.mutate('hp', -randInt(10, 30), '你不仅没保护住钱');
+                            game.mutate('money', -randInt(15, 20), '而且受伤了');
                         }
-                    },
-                    { 
-                        text: "交钱", 
-                        action: game => {
-                            game.addText("破财消灾", 'bad');
-                            game.mutateMoney(-randInt(15, 20));
-                            game.showState();
-                        }
-                    },
-                ]);
-            },
+                        game.showState();
+                    }
+                },
+                {
+                    text: "交钱",
+                    action: game => {
+                        game.mutate('money', -randInt(15, 20), '破财消灾');
+                        game.showState();
+                    }
+                },
+            ],
         },
         {
             id: "hire",
             action: (game) => {
-                const payment = randInt(50, 100);
+                const payment = randInt(20, 50);
                 game.addText("有人打算雇佣你干活，酬劳是" + payment, 'event');
                 game.setOptions([
-                    { 
-                        text: "接受", 
+                    {
+                        text: "接受",
                         action: game => {
-                            game.goToSite('work_place');
-                            game.addText("辛勤劳作后，最终挣到了钱", 'good');
-                            game.mutateMoney(payment);
+                            game.goToSite('work_place', true);
+                            game.mutate('money', payment, '辛勤劳作后，最终挣到了钱');
                             game.showState();
                         }
                     },
-                    { 
-                        text: "拒绝", 
+                    {
+                        text: "拒绝",
                         action: game => {
                             game.addText("于是你继续等待");
                             game.showState();

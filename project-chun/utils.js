@@ -24,6 +24,9 @@ function chance(p) {
  * @returns {T} 带权重的随机结果
  */
 function choose(list, weightKey = "weight") {
+    if (list.length === 1) {
+        return list[0];
+    }
     const totalWeight = list.reduce((s, v) => s + v[weightKey], 0);
     const r = randInt(0, totalWeight);
     for (let index = 0, sum = 0; index < list.length; index++) {

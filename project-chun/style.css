@@ -2,19 +2,26 @@ html, body, #app {
     width: 100%;
     height: 100%;
     overflow: hidden;
+    font-size: 2vh;
 }
 
 * {
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-    font-size: 2vh;
+    font-size: 1rem;
 }
 
 #app {
     position: relative;
     display: flex;
     flex-direction: column;
+}
+
+#state-bar {
+    height: 3em;
+    font-size: 0.8rem;
+    padding: .2em .5em;
 }
 
 #text-panel {
@@ -55,13 +62,18 @@ html, body, #app {
 }
 
 .bad {
-    color: #972020;
+    color: #eb5b5b;
 }
 
 .good {
-    color: #27833e;
+    color: #47cc69;
 }
 
 .event {
-    color: #4d441f;
+    color: #3b394d;
+}
+
+.value-mutation {
+    font-size: 0.8rem;
+    text-align: center;
 }

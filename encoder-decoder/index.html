@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title>茶茶子编码/解码器</title>
+    </head>
+
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            padding: 1em;
+        }
+        code {
+            display: block;
+            word-break: break-all;
+            height: 15em;
+            overflow-y: scroll;
+        }
+        .d-flex {
+            display: flex;
+        }
+        .d-flex-vertical {
+            display: flex;
+            flex-direction: column;
+        }
+        .flex-center {
+            justify-content: center;
+            align-items: center;
+        }
+        .flex-1 {
+            flex: 1;
+        }
+
+        .tool-bar {
+            padding: 1em;
+        }
+        .tool-bar > *:not(:first-child) {
+            margin-left: 1em;
+        }
+    </style>
+
+    <body class="d-flex-vertical">
+        <label for="decoded">明文</label>
+        <textarea id="decoded" class="flex-1"></textarea>
+
+        <div class="tool-bar d-flex">
+            <button onclick="encode()">↓编码</button>
+
+            <label for="publicKey">公钥：</label>
+            <input id="publicKey" class="flex-1" type="text"/>
+
+            <label for="privateKey">私钥：</label>
+            <input id="privateKey" class="flex-1" type="text"/>
+
+            <button onclick="decode()">解码↑</button>
+        </div>
+
+        <label for="encoded">密文</label>
+        <textarea id="encoded" class="flex-1"></textarea>
+
+        </div>
+    </body>
+
+    <script>
+        const decodedBox = document.getElementById('decoded');
+        const encodedBox = document.getElementById('encoded');
+        const publicKeyBox = document.getElementById('publicKey');
+        const privateKeyBox = document.getElementById('privateKey');
+
+        function sortByWeight(arr, getWeight, defaultWeight = 0) {
+            return arr.sort((a, b) => (getWeight(a) || defaultWeight) - (getWeight(b) || defaultWeight));
+        }
+
+        function buildTree(counters, publicKey) {
+            // 记录权重，包括非叶节点的
+            const weights = new Map();
+            const tree = Object.keys(counters);
+            tree.forEach(c => weights.set(c, counters[c]));
+            while (tree.length > 1) {
+                sortByWeight(tree, e => weights.get(e));
+                const subtree = tree.splice(0, publicKey.length);
+                weights.set(subtree, subtree.reduce((sum, c) => (sum + weights.get(c)), 0));
+                tree.push(subtree);
+            }
+            return Array.isArray(tree[0]) ? tree[0] : tree;
+        }
+
+        function unifyPublicKey(raw) {
+            const set = new Set();
+            const result = [];
+            for (const c of raw) {
+                if (set.has(c)) continue;
+                result.push(c);
+                set.add(c);
+            }
+            return result.join('');
+        }
+
+        function padEnd(str, len, filler) {
+            if (str.length >= len) return str.slice(str.length - len, str.length);
+            return Array(len - str.length).fill(filler).join('') + str;
+        }
+
+        function encode() {
+            const decoded = decodedBox.value;
+            const publicKey = unifyPublicKey(publicKeyBox.value);
+
+            if (!decoded) return;
+
+            // 字符计数
+            const counters = decoded.split('').reduce((c, v) => ((v in c) ? (c[v]++) : (c[v] = 1), c), {});
+            const tree = buildTree(counters, publicKey);
+
+            // 构建明文到密文的映射
+            function build(node, prefix, map) {
+                if (Array.isArray(node)) {
+                    node.forEach((n, i) => build(n, prefix + publicKey[i], map));
+                } else {
+                    map[node] = prefix;
+                }
+            }
+            const codeMap = {};
+            build(tree, '', codeMap);
+
+            // 制作私钥
+            const privateKeyElements = [];
+            for (const c of Object.keys(counters)) {
+                privateKeyElements.push(c.charCodeAt(0), counters[c]);
+            }
+            const privateKey = privateKeyElements.map(n => padEnd(n.toString(16), 4, '0').toUpperCase()).join('');
+
+            encodedBox.value = decoded.split('').map(c => codeMap[c]).join('');
+            privateKeyBox.value = privateKey;
+        }
+
+        function decode() {
+            const encoded = encodedBox.value;
+            const publicKey = unifyPublicKey(publicKeyBox.value);
+            const privateKey = privateKeyBox.value;
+
+            const counters = {};
+            for (let i = 0; i < privateKey.length; i += 8) {
+                const key = String.fromCharCode(parseInt(privateKey.slice(i, i + 4), 16));
+                const weight = parseInt(privateKey.slice(i + 4, i + 8), 16);
+                counters[key] = weight;
+            }
+            const tree = buildTree(counters, publicKey);
+
+            const indecies = publicKey.split('').reduce((d, c, i) => (d[c] = i, d), {});
+            let node = tree;
+            const decodedElements = [];
+            for (const c of encoded) {
+                const index = indecies[c];
+                node = node[index];
+                if (!Array.isArray(node)) {
+                    decodedElements.push(node);
+                    node = tree;
+                }
+            }
+
+            decodedBox.value = decodedElements.join('');
+        }
+    </script>
+</html>

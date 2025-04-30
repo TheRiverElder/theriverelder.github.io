@@ -46,7 +46,7 @@ class Cell {
 
     invade(cost, offsetX = randOff(), offsetY = randOff()) {
         let cast = Math.min(cost, this.power);
-        if (cast) {
+        if (cast > 0) {
             this.power -= cast;
             let target = this.map.get(this.x + offsetX, this.y + offsetY);
             if (target.life === NIL_LIFE) {

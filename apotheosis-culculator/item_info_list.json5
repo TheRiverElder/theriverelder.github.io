@@ -117,7 +117,7 @@
         clues:0,
     },
     {
-        id:"apotheosis:echoing_shulkshelf",
+        id:"apotheosis:echoing_sculkshelf",
         level:5,
         maxLevel:40,
         quanta:5,
@@ -126,7 +126,7 @@
         clues:1,
     },
     {
-        id:"apotheosis:soul_touched_shulkshelf",
+        id:"apotheosis:soul_touched_sculkshelf",
         level:5,
         maxLevel:40,
         quanta:15,

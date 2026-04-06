@@ -12,8 +12,8 @@
     "apotheosis:deepshelf": "深暗书架",
     "apotheosis:echoing_deepshelf": "回响深暗书架",
     "apotheosis:soul_touched_deepshelf": "灵魂触摸深暗书架",
-    "apotheosis:echoing_shulkshelf": "回响幽匿书架",
-    "apotheosis:soul_touched_shulkshelf": "灵魂触摸幽匿书架",
+    "apotheosis:echoing_sculkshelf": "回响幽匿书架",
+    "apotheosis:soul_touched_sculkshelf": "灵魂触摸幽匿书架",
     "apotheosis:endshelf": "末地书架",
     "apotheosis:draconic_endshelf": "巨龙末地书架",
     "apotheosis:pearl_endshelf": "璀璨末地书架",
@@ -39,5 +39,17 @@
     "quanta": "量子化",
     "rectification": "校准",
     "arcana": "阿卡那",
-    "clues": "魔咒线索"
+    "clues": "魔咒线索",
+
+    "ui.text.stock": "库存：",
+    "ui.text.initial": "初始",
+    "ui.range.text.max": "最大",
+    "ui.range.text.min": "最小",
+    "ui.button.culculate": "计算",
+    "ui.button.stop": "停止",
+    "ui.button.save": "保存配置",
+    "ui.title.inventory": "库存材料",
+    "ui.title.requests": "需求",
+    "ui.title.result": "计算结果",
+    "ui.item_stack.amount": "数量"
 }

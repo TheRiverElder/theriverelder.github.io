@@ -1,0 +1,26 @@
+@charset "utf-8";
+
+@font-face {
+    font-family: "杨任东竹石体-Regular";
+    src: local("杨任东竹石体-Regular"), url("../assets/fonts/YangRenDongZhuShiTi-Regular-2.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: "沐瑶随心手写体";
+    src: local("沐瑶随心手写体"), url("../assets/fonts/YaoSuiXinShouXieTi-2.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: "全字庫說文解字";
+    src: local("全字庫說文解字"), url("../assets/fonts/QuanZiKuShuoWenJieZiZiTi-2.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: "站酷庆科黄油体";
+    src: local("站酷庆科黄油体"), url("../assets/fonts/ZhanKuQingKeHuangYouTi-2.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: "胡晓波真帅体";
+    src: local("胡晓波真帅体"), url("../assets/fonts/HuXiaoBoZhenShuaiTi-2.otf") format('opentype');
+}

@@ -1,0 +1,24 @@
+@font-face {
+    font-family: "杨任东竹石体";
+    src: url("./assets/fonts/YangRenDongZhuShiTi-Regular-2.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: "沐瑶随心手写体";
+    src: url("./assets/fonts/YaoSuiXinShouXieTi-2.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: "全字库说文解字";
+    src: url("./assets/fonts/QuanZiKuShuoWenJieZiZiTi-2.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: "站酷庆科黄油体";
+    src: url("./assets/fonts/ZhanKuQingKeHuangYouTi-2.ttf") format('truetype');
+}
+
+@font-face {
+    font-family: "胡晓波真帅体";
+    src: url("./assets/fonts/HuXiaoBoZhenShuaiTi-2.otf") format('opentype');
+}
